@@ -5,7 +5,14 @@ import cookieParser from "cookie-parser"
 const app = express()
 
 app.use(cors({
-    origin: process.env.CORS_ORIGIN         // FRONTEND ME SE KIS KIS JAGAH SE REQUEST ACCEPT KR RAHA HU
+    origin: process.env.CORS_ORIGIN,         // FRONTEND ME SE KIS KIS JAGAH SE REQUEST ACCEPT KR RAHA HU
+    credentials: true
 }))
+
+app.use(express.json({limit: "16kb"}))
+app.use(express.urlencoded({extended: true,limit: "16kb"}))
+app.use(express.static("public"))
+app.use(cookieParser())
+
 
 export { app }
