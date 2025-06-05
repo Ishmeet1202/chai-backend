@@ -13,6 +13,7 @@ const uploadOnCloudinary = async (localFilePath) => {
         if (!localFilePath) {
             return null;
         }
+
         const response = await cloudinary.uploader.upload(localFilePath, {
             resource_type: "auto"
         })
@@ -22,10 +23,20 @@ const uploadOnCloudinary = async (localFilePath) => {
         
         fs.unlinkSync(localFilePath)
         return response;
+        
     } catch (error) {
         fs.unlinkSync(localFilePath) // REMOVE THE LOCAlLY SAVED TEMPORARY FILE AS THE UPLOAD OPERATION GOT FAILED
         return null;
     }
 }
 
-export {uploadOnCloudinary}
+const deleteFromCloudinary = async (publicId) => {
+    try {
+        const result = await cloudinary.uploader.destroy(publicId);
+        return result
+    } catch (error) {
+        console.error("Error deleting old avatar from Cloudinary:", error);
+    }
+};
+
+export {uploadOnCloudinary, deleteFromCloudinary}
